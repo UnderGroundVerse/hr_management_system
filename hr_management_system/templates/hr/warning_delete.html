@@ -1,0 +1,18 @@
+{% extends 'hr/sidebar_base.html' %}
+
+{% block main_content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <h2>Delete Warning</h2>
+    <p>Are you sure you want to delete the following warning?</p>
+    <blockquote>
+        <strong>{{ warning }}</strong>
+        <p>Notes: {{ warning.notes|default:"No notes provided." }}</p>
+        <p>Is Official: {{ warning.is_official|yesno:"Official,Unofficial" }}</p>
+    </blockquote>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Deletion</button>
+        <a href="{% url 'hr_manage:warning-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</main>
+{% endblock %}

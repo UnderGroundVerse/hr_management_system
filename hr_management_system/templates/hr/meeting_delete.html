@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section id="meeting-delete" class="mt-5">
+    <div class="container mt-4">
+    <h3>Delete Meeting</h3>
+    <div class="alert alert-warning">
+        <strong>Warning!</strong> Are you sure you want to delete the meeting titled "{{ meeting.title }}"?
+    </div>
+    <form action="{% url 'hr_manage:meeting-delete' meeting.pk %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a href="{% url 'hr_manage:meeting-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+    </div>
+</section>
+{% endblock content%}

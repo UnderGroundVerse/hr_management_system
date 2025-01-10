@@ -1,0 +1,101 @@
+{% extends 'hr/sidebar_base.html' %}
+{% load auth_hr %}
+
+{% block main_content %}
+   
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="container mt-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">{{ meeting.title }}</h4>
+                    
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-4">
+                                <h6 class="text-muted">Description</h6>
+                                <p class="text-dark">{{ meeting.description|default:"No description available." }}</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="text-muted">Location</h6>
+                                <p class="text-dark">{{ meeting.location|default:"No location available" }}</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h6 class="text-muted">Scheduled Date</h6>
+                                <p class="text-dark">{{ meeting.scheduled_at|date:"F j, Y, g:i a" }}</p>
+                            </div>
+        
+                            <div class="mb-4">
+                                <h6 class="text-muted">Attendance</h6>
+                                <p>
+                                    {% if meeting.required_to_attend %}
+                                        <span class="badge bg-success">Required to Attend</span>
+                                    {% else %}
+                                        <span class="badge bg-warning">Optional Attendance</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+        
+                            <div class="mb-4">
+                                <h6 class="text-muted">Evaluation Status</h6>
+                                <p>
+                                    {% if meeting.evaluated %}
+                                        <span class="badge bg-success">Evaluated</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Not Evaluated</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+        
+                            <div class="mb-4">
+                                <h6 class="text-muted">Assigned Teams</h6>
+                                <ul class="list-unstyled">
+                                    {% if meeting.teams.all %}
+                                        {% for team in meeting.teams.all %}
+                                            <li class="text-dark">{{ team.name }}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li class="text-muted">No teams assigned.</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+        
+                            <div class="mb-4">
+                                <h6 class="text-muted">Assigned Sub Teams</h6>
+                                <ul class="list-unstyled">
+                                    {% if meeting.sub_teams.all %}
+                                        {% for sub_team in meeting.sub_teams.all %}
+                                            <li class="text-dark">{{ sub_team.name }}</li>
+                                        {% endfor %}
+                                    {% else %}
+                                        <li class="text-muted">No sub-teams assigned.</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-4">
+                            <div class="mb-4">
+                                <h6 class="text-muted">Meeting Created By</h6>
+                                <p class="text-dark">{{ meeting.created_by.get_full_name }}</p>
+                            </div>
+        
+                            <div class="mb-4">
+                                <h6 class="text-muted">Actions</h6>
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'hr_manage:meeting-update' meeting.pk %}" class="btn btn-primary btn-block mb-2">Edit Meeting</a>
+                                    <a href="{% url 'hr_manage:evaluate-meeting-multi-create' meeting.pk %}" class="btn btn-success btn-block mb-2">Evaluate Meeting</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+        
+
+
+
+{% endblock main_content%}

@@ -1,0 +1,120 @@
+{% extends 'hr/sidebar_base.html' %}
+{% load auth_hr %}
+
+{% block main_content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="container mt-4">
+        <h3>Meetings</h3>
+
+        <!-- Search Form -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="GET" action="{% url 'hr_manage:meeting-list' %}">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search by title or description..." value="{{ request.GET.q }}">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Create New Meeting Button -->
+        <div class="col-md-6 text-right">
+            <a href="{% url 'hr_manage:meeting-create' %}" class="btn btn-success mb-3">Create New Meeting</a>
+        </div>
+
+        <!-- Meeting Table -->
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th style="width: 30%;">Description</th>
+                <th>Scheduled Date</th>
+                <th>Required to Attend</th>
+                <th>Assigned Team</th>
+                <th>Evaluated</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if object_list %}
+                {% for meeting in object_list %}
+                <tr>
+                <td>{{ meeting.title }}</td>
+                <td>{{ meeting.description|truncatewords:10 }}</td>
+                <td>{{ meeting.scheduled_at|date:"F j, Y, g:i a" }}</td>
+                <td>{{ meeting.required_to_attend|yesno:"✅,❌" }}</td>
+                <td>
+                    {% if meeting.teams.all %}
+                    {% for team in meeting.teams.all %}
+                        <span class="badge bg-secondary">{{ team.name }}</span>
+                    {% endfor %}
+                    {% else %}
+                    <span class="text-muted">No team assigned</span>
+                    {% endif %}
+                </td>
+                <td>{{ meeting.evaluated|yesno:"✅,❌" }}</td>
+                <td class="text-center">
+                    <a href="{% url 'hr_manage:meeting-detail' meeting.pk %}" class="btn btn-info btn-sm">View</a>
+
+                    <a href="{% url 'hr_manage:evaluate-meeting-multi-create' meeting.pk %}" class="btn btn-success btn-sm">Evaluate</a>
+                 
+                 
+                </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center">No meetings found.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if is_paginated %}
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo;</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&raquo;</span>
+                    </li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</main>
+{% endblock main_content %}

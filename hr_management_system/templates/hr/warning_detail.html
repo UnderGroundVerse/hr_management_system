@@ -1,0 +1,17 @@
+{% extends 'hr/sidebar_base.html' %}
+
+{% block main_content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <h3>Warning Details</h3>
+    <div>
+        <h4>Member: {{ warning.member }}</h4>
+        <p><strong>Warning Type:</strong> {{ warning.get_warning_type_display }}</p>
+        <p><strong>Notes:</strong></p>
+        <p>{{ warning.notes|default:"No notes provided." }}</p>
+        <p><strong>Is Official:</strong> {{ warning.is_official|yesno:"Official,Unofficial" }}</p>
+    </div>
+    <a href="{% url 'hr_manage:warning-update' warning.pk %}" class="btn btn-warning">Edit Warning</a>
+    <a href="{% url 'hr_manage:warning-delete' warning.pk %}" class="btn btn-danger">Delete Warning</a>
+    <a href="{% url 'hr_manage:warning-list' %}" class="btn btn-secondary">Back to List</a>
+</main>
+{% endblock %}

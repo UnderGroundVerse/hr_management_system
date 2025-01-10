@@ -1,0 +1,13 @@
+{% extends 'hr/sidebar_base.html' %}
+
+{% block main_content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <h3>{% if warning %}Edit Warning{% else %}Create Warning{% endif %}</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{% if warning %}Update Warning{% else %}Create Warning{% endif %}</button>
+        <a href="{% url 'hr_manage:warning-list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</main>
+{% endblock %}

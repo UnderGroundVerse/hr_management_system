@@ -1,0 +1,41 @@
+{% extends 'hr/sidebar_base.html' %}
+{% load auth_hr %}
+
+{% block main_content %}
+
+
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="container mt-4">
+    <h3>{% if meeting %}Update Meeting{% else %}Create Meeting{% endif %}</h3>
+    <form method="post" >
+        {% csrf_token %}
+        <!-- <div class="form-group">
+            <label for="title">Meeting Title</label>
+            <input type="text" name="title" class="form-control" id="title" value="{{ meeting.title|default:'' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Meeting Description</label>
+            <textarea name="description" class="form-control" id="description" rows="3">{{ meeting.description|default:'' }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="scheduled_at">Scheduled Date</label>
+            <input type="datetime-local" name="scheduled_at" class="form-control" id="scheduled_at" value="{{ meeting.scheduled_at|date:'Y-m-d H:i'|default:'' }}" required>
+        </div>
+        <div class="form-group">
+            <label for="required_to_attend">Required to Attend</label>
+            <select name="required_to_attend" class="form-control" id="required_to_attend">
+                <option value="True" {% if meeting.required_to_attend %}selected{% endif %}>Yes</option>
+                <option value="False" {% if not meeting.required_to_attend %}selected{% endif %}>No</option>
+            </select>
+        </div> -->
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary mt-3">{% if meeting %}Update{% else %}Create{% endif %}</button>
+        {% if meeting %}
+            <a href="{% url 'hr_manage:meeting-delete' meeting.pk %}" class="btn btn-danger mt-3">Delete</a>
+            
+        {% endif %}
+    </form>
+    </div>
+</main>
+
+{% endblock main_content%}

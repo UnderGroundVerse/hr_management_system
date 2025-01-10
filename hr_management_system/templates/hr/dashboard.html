@@ -1,0 +1,138 @@
+{% extends 'hr/sidebar_base.html' %}
+{% load math %}
+
+{% block main_content %}
+
+
+        <!-- Main Content Section -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <section class="container mt-4">
+                <div class="container mt-5">
+                    <h3 class="mb-4">Dashboard</h3>
+
+                    <!-- Teams Section -->
+                    <div class="row mb-4">
+                        <h4 class="mb-3">Your Teams</h4>
+                        {% if teams %}
+                        <div class="row">
+                            {% for team in teams %}
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ team.name }}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">Sub-teams</h6>
+                                        <ul class="list-group">
+                                            {% for sub_team in team.sub_teams.all %}
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                {{ sub_team.name }} 
+                                                
+                                            </li>
+                                            {% empty %}
+                                            <li class="list-group-item">No sub-teams available.</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p>No teams available.</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Own Meetings Section -->
+                    <div class="row mb-4">
+                        <h4 class="mb-3">Meetings</h4>
+                        {% if own_meetings %}
+                        <div class="row">
+                            {% for meeting in own_meetings %}
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ meeting.title }}</h5>
+                                        <p class="card-text">{{ meeting.description|truncatewords:20 }}</p>
+                                        <p class="text-muted">Scheduled: {{ meeting.scheduled_at|date:"F j, Y, g:i a" }}</p>
+                                        
+                                        
+                                        <ul>
+                                            {% for team in meeting.teams.all %}
+                                            <li>{{ team.name }}</li>
+                                            {% empty %}
+                                            <li>No teams assigned.</li>
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                        <a href="{% url 'hr_manage:meeting-detail' meeting.pk %}" class="btn btn-outline-primary btn-sm">Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <a href="{% url 'hr_manage:meeting-list' %}?own=True" class="btn btn-outline-primary btn-sm">View More</a>
+                        </div>
+                        {% else %}
+                        <p>No meetings created by you.</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Unevaluated Meetings Section -->
+                    <div class="row mb-4">
+                        <h4 class="mb-3">Meetings to Evaluate</h4>
+                        {% if unevaluated_meetings %}
+                        <div class="row">
+                            {% for meeting in unevaluated_meetings %}
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ meeting.title }}</h5>
+                                        <p class="card-text">{{ meeting.description|truncatewords:20 }}</p>
+                                        <p class="text-muted">Scheduled: {{ meeting.scheduled_at|date:"F j, Y, g:i a" }}</p>
+                                        
+                                        
+                                        <ul>
+                                            {% for team in meeting.teams.all %}
+                                            <li>{{ team.name }}</li>
+                                            {% empty %}
+                                            <li>No teams assigned.</li>
+                                            {% endfor %}
+                                        </ul>
+                                        
+                                        <a href="{% url 'hr_manage:evaluate-meeting-multi-create' meeting.pk %}" class="btn btn-outline-primary btn-sm">Evaluate</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <a href="{% url 'hr_manage:meeting-list' %}?evaluated=False" class="btn btn-outline-primary btn-sm">View More</a>
+                        </div>
+                        {% else %}
+                        <p>No meetings pending evaluation.</p>
+                        {% endif %}
+                    </div>
+                    
+
+                    <!-- Events Section -->
+                    <!-- <div class="row mb-4">
+                        <h4 class="mb-3">Your Events</h4>
+                        {% if events %}
+                        <div class="row">
+                            {% for event in events %}
+                            <div class="col-md-4">
+                                <div class="card shadow-sm mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ event.title }}</h5>
+                                        <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                                        <p class="text-muted">Scheduled: {{ event.scheduled_at|date:"F j, Y, g:i a" }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <p>No events available.</p>
+                        {% endif %}
+                    </div> -->
+                </div>
+            </section>
+        </main>
+
+{% endblock main_content %}

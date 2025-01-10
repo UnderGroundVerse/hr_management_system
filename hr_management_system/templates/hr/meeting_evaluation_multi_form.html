@@ -1,0 +1,89 @@
+{% extends 'hr/sidebar_base.html' %}
+
+{% block main_content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="container">
+        <h3>Evaluate Members for {{ meeting.title }}</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ formset.management_form }}
+                {% for form, member in formset_form_members %}
+                    <div class="card mb-3" id="{{ member.email }}">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{{ member.profile_picture.url }}" alt="{{ member }}" class="rounded-circle me-2" width="50" height="50">
+                                <h5>Evaluating: {{ member }}</h5> <i><- view more details</i>  
+                            </div>
+        
+                            <div class="row">
+                                {{ form.meeting }}
+                                {{ form.member }}
+        
+                                <!-- Attendance -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        {{ form.attendance.label_tag }}
+                                        {{ form.attendance }}
+                                    </div>
+                                </div>
+        
+                                <!-- Task -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        {{ form.task.label_tag }}
+                                        {{ form.task }}
+                                    </div>
+                                </div>
+        
+                                <!-- Performance -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        {{ form.performance.label_tag }}
+                                        {{ form.performance }}
+                                    </div>
+                                </div>
+        
+                                <!-- Interaction -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        {{ form.interaction.label_tag }}
+                                        {{ form.interaction }}
+                                    </div>
+                                </div>
+        
+                                <!-- Behavior -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        {{ form.behavior.label_tag }}
+                                        {{ form.behavior }}
+                                    </div>
+                                </div>
+        
+                                <!-- Bonus -->
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        {{ form.bonus.label_tag }}
+                                        {{ form.bonus }}
+                                    </div>
+                                </div>
+        
+                
+        
+                                
+        
+                                <!-- Comment (takes full row) -->
+                                <div class="form-group mt-3">
+                                    {{ form.comment.label_tag }}
+                                    {{ form.comment }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-success">Submit Evaluations</button>
+        </form>
+    </div>
+</main>
+{% endblock main_content %}

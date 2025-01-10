@@ -1,0 +1,62 @@
+{% extends 'hr/sidebar_base.html' %}
+
+{% block main_content %}
+<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+    <div class="container mt-4">
+        <h3>Dismiss Member Confirmation</h3>
+
+        <!-- Member Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                Member Details
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ member.full_name }}</h5>
+                <p class="card-text">Email: {{ member.email }}</p>
+                <p class="card-text">Position: {{ member.user_type.type }}</p>
+                <p class="card-text">Team: {{ member.team }}</p>
+                <p class="card-text">Sub Team: {{ member.sub_team }}</p>
+                <p class="card-text">Number of Warnings: {{ warning_num }}</p>
+            </div>
+        </div>
+
+        <!-- Warnings List -->
+        {% if warning_num > 0 %}
+        <div class="card mb-4">
+            <div class="card-header">
+                Member's Warnings
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for warning in warnings %}
+                    <li class="list-group-item">
+                        <a href="{% url 'hr_manage:warning-detail' warning.pk %}">{{ warning.warning_type }}</a> {{ warning.notes }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            This member has no warnings.
+        </div>
+        {% endif %}
+
+        <!-- Dismiss Confirmation -->
+        <div class="alert alert-danger">
+            <strong>Warning:</strong> You are about to dismiss this member. This action cannot be undone. Are you sure you want to proceed?
+        </div>
+
+        <!-- Dismiss and Cancel Buttons -->
+         {% if member.user_type.type != 'Dismissed' %}
+        <form method="post" action="{% url 'hr_manage:dismiss-member' member.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Confirm Dismissal</button>
+            <a href="{% url 'hr_manage:member-list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+        {% else %}
+        <p>Member was already dismissed</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

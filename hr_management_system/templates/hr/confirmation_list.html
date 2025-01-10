@@ -1,0 +1,104 @@
+{% extends 'hr/sidebar_base.html' %}
+
+{% block content %}
+<main class="container mt-4">
+    <h3>Meeting Confirmations for {{ confirmations.0.meeting.title }}</h3>
+    <p>Scheduled at: {{ confirmations.0.meeting.scheduled_at|date:"F j, Y, g:i a" }}</p>
+    <h5>Status - Yes: {{ confirmed_yes_members.count }}, No: {{ confirmed_no_members.count }}, Unconfirmed: {{unconfirmed_members.count}}</h5>
+    <!-- Display Confirmed Attendance -->
+    <h4>Confirmed Attendance</h4>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Member</th>
+                <th>Confirm Attendance</th>
+                <th>Confirmation Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if confirmed_yes_members %}
+                {% for confirmation in confirmed_yes_members %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ confirmation.member }}</td>
+                            <td>{{ confirmation.confirm_attendance|yesno:"✅,❌" }}</td>
+                            <td>{{ confirmation.created_at|date:"Y-m-d g:i a" }}</td>
+                        </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No confirmations found for this meeting.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+    
+    <!-- Display Members Who Confirmed with No -->
+    <h4>Confirmed with No</h4>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Member</th>
+                <th>Confirm Attendance</th>
+                <th>Excuse Details</th>
+                <th>Approved Excuse</th>
+                <th>Approval Comments</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if confirmed_no_members %}
+                {% for confirmation in confirmed_no_members %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ confirmation.member }}</td>
+                            <td>{{ confirmation.confirm_attendance|yesno:"YES,NO" }}</td>
+                            <td>{{ confirmation.excuse_details|default_if_none:"N/A" }}</td>
+                            <td>{{ confirmation.approved_excuse|yesno:"✅,❌" }}</td>
+                            <td>{{ confirmation.approval_comments }}</td>
+                            <td><a href="{% url 'hr_manage:approve-excuse' confirmation.pk %}">Approve</a></td>
+                        </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No members confirmed with Excuse for this meeting.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <!-- Display Members Who Didn't Confirm -->
+    <h4>Members Who Didn't Confirm</h4>
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>#</th> 
+                <th>Member</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in unconfirmed_members %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ member }}</td>
+                <td><a href="#">Send Reminder (Under development)</a></td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" class="text-center">No members found who did not confirm.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mt-4"></div>
+    {% if confirmations %}
+        <a href="{% url 'hr_manage:meeting-detail' confirmations.0.meeting.pk %}" class="btn btn-primary">Back to Meeting Detail</a>
+    {% else %}
+        <a href="{% url 'hr_manage:meeting-list' %}" class="btn btn-primary">Back to Meeting List</a>
+    {% endif %}
+</main>
+{% endblock %}

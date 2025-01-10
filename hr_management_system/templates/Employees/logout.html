@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="call-to-action section-padding">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-7 col-12">
+                <h2 class="text-white mb-4">You are logged out</h2>
+
+                <p class="text-white">See you soon.</p>
+            </div>
+
+            <div class="col-lg-3 col-12 ms-lg-auto mt-4 mt-lg-0">
+                <a href="{% url 'members:login' %}" class="custom-btn btn">Login again?</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
