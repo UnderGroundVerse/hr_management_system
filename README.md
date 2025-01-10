@@ -140,6 +140,126 @@ CREATE TABLE hr_management_system.warnings (
 );
 ```
 
+
+## Query Examples
+Here are some SQL query examples used in the HR Management System:
+
+### Query 1: Retrieve Upcoming Meetings for Teams
+```sql
+SELECT *
+FROM meeting hm
+INNER JOIN meeting_teams hmt ON hm.id = hmt.meeting_id
+WHERE hm.evaluated = FALSE
+  AND hmt.team_id IN (
+      SELECT et.id
+      FROM team et
+      INNER JOIN hrrole_teams hrt ON et.id = hrt.team_id
+  )
+ORDER BY hm.created_at DESC, hm.updated_at DESC
+LIMIT 3;
+```
+
+### Query 2: Retrieve All Meetings for Specific Teams
+```sql
+SELECT *
+FROM meeting hm
+INNER JOIN meeting_teams hmt ON hm.id = hmt.meeting_id
+WHERE hmt.team_id IN (
+    SELECT et.id
+    FROM team et
+    INNER JOIN hrrole_teams hrt ON et.id = hrt.team_id
+)
+ORDER BY hm.created_at DESC, hm.updated_at DESC
+LIMIT 3;
+```
+
+### Query 3: Retrieve Meeting Evaluations for a Specific Member
+```sql
+SELECT *
+FROM meetingevaluation 
+WHERE (meetingevaluation.meeting_id IN (5) AND meetingevaluation.member_id = {member.id});
+```
+
+
+## Insert Examples for Employee Table
+Here are some examples of inserting data into the `employee` table:
+
+```sql
+INSERT INTO hr_management_system.employee (id, full_name, email, phone_number, password)
+VALUES (1, 'John Smith', 'john@example.com', '1234567890', '12345678');
+
+INSERT INTO hr_management_system.employee (id, full_name, email, phone_number, password)
+VALUES (2, 'Jane Doe', 'jane@example.com', '9876543210', '87654321');
+
+INSERT INTO hr_management_system.employee (id, full_name, email, phone_number, password)
+VALUES (3, 'Alice Johnson', 'alice@example.com', '5551234567', 'password123');
+```
+
+
+## Normalization Done in the Project
+Normalization is applied to reduce data redundancy and improve database design. Here's an example of normalizing the `employee` table:
+
+### Unnormalized Table
+| ID  | Name       | Email             | Phone Number | Team Name  | Subteam Name |
+|-----|------------|-------------------|--------------|------------|--------------|
+| 1   | John Smith | john@example.com  | 1234567890   | HR         | Recruitment  |
+| 2   | Jane Doe   | jane@example.com  | 9876543210   | IT         | Development  |
+
+### First Normal Form (1NF)
+Separate repeating groups into distinct rows:
+
+| ID  | Name       | Email             | Phone Number | Team ID | Subteam ID |
+|-----|------------|-------------------|--------------|---------|------------|
+| 1   | John Smith | john@example.com  | 1234567890   | 1       | 1          |
+| 2   | Jane Doe   | jane@example.com  | 9876543210   | 2       | 2          |
+
+### Second Normal Form (2NF)
+Eliminate partial dependencies by splitting data into related tables:
+
+**Employee Table:**
+| ID  | Name       | Email             | Phone Number |
+|-----|------------|-------------------|--------------|
+| 1   | John Smith | john@example.com  | 1234567890   |
+| 2   | Jane Doe   | jane@example.com  | 9876543210   |
+
+**Team Table:**
+| ID  | Team Name  |
+|-----|------------|
+| 1   | HR         |
+| 2   | IT         |
+
+**Subteam Table:**
+| ID  | Subteam Name | Team ID |
+|-----|--------------|---------|
+| 1   | Recruitment  | 1       |
+| 2   | Development  | 2       |
+
+### Third Normal Form (3NF)
+Remove transitive dependencies:
+
+**Team Table (Updated):**
+| ID  | Team Name  |
+|-----|------------|
+| 1   | HR         |
+| 2   | IT         |
+
+**Subteam Table (Updated):**
+| ID  | Subteam Name | Team ID |
+|-----|--------------|---------|
+| 1   | Recruitment  | 1       |
+| 2   | Development  | 2       |
+
+
+## ERD Diagram
+For a visual representation of the database schema, refer to the ERD diagram:
+![ERD Diagram](/images/erd.png)
+
+## Relational Mapping Diagram
+![Relational Mapping Diagram](/images/rmd.png)
+
+## MySql Auto Generated Diagram
+![MySql Auto Generated Diagram](/images/msql.png)
+
 ## Contributors
 - **Mario Morcos Wassily**
 - **Mohamed Mahmoud Hesham Selim**
