@@ -180,6 +180,17 @@ FROM meetingevaluation
 WHERE (meetingevaluation.meeting_id IN (5) AND meetingevaluation.member_id = {member.id});
 ```
 
+
+## ERD Diagram
+For a visual representation of the database schema, refer to the ERD diagram:
+![ERD Diagram](/images/erd.png)
+
+## Relational Mapping Diagram
+![Relational Mapping Diagram](/images/rmd.png)
+
+## MySql Auto Generated Diagram
+![MySql Auto Generated Diagram](/images/msql.png)
+
 ## Contributors
 - **Mario Morcos Wassily**
 - **Mohamed Mahmoud Hesham Selim**
