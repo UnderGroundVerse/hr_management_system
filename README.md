@@ -140,6 +140,46 @@ CREATE TABLE hr_management_system.warnings (
 );
 ```
 
+
+## Query Examples
+Here are some SQL query examples used in the HR Management System:
+
+### Query 1: Retrieve Upcoming Meetings for Teams
+```sql
+SELECT *
+FROM meeting hm
+INNER JOIN meeting_teams hmt ON hm.id = hmt.meeting_id
+WHERE hm.evaluated = FALSE
+  AND hmt.team_id IN (
+      SELECT et.id
+      FROM team et
+      INNER JOIN hrrole_teams hrt ON et.id = hrt.team_id
+  )
+ORDER BY hm.created_at DESC, hm.updated_at DESC
+LIMIT 3;
+```
+
+### Query 2: Retrieve All Meetings for Specific Teams
+```sql
+SELECT *
+FROM meeting hm
+INNER JOIN meeting_teams hmt ON hm.id = hmt.meeting_id
+WHERE hmt.team_id IN (
+    SELECT et.id
+    FROM team et
+    INNER JOIN hrrole_teams hrt ON et.id = hrt.team_id
+)
+ORDER BY hm.created_at DESC, hm.updated_at DESC
+LIMIT 3;
+```
+
+### Query 3: Retrieve Meeting Evaluations for a Specific Member
+```sql
+SELECT *
+FROM meetingevaluation 
+WHERE (meetingevaluation.meeting_id IN (5) AND meetingevaluation.member_id = {member.id});
+```
+
 ## Contributors
 - **Mario Morcos Wassily**
 - **Mohamed Mahmoud Hesham Selim**
