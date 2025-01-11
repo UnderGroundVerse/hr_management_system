@@ -234,21 +234,6 @@ Eliminate partial dependencies by splitting data into related tables:
 | 1   | Recruitment  | 1       |
 | 2   | Development  | 2       |
 
-### Third Normal Form (3NF)
-Remove transitive dependencies:
-
-**Team Table (Updated):**
-| ID  | Team Name  |
-|-----|------------|
-| 1   | HR         |
-| 2   | IT         |
-
-**Subteam Table (Updated):**
-| ID  | Subteam Name | Team ID |
-|-----|--------------|---------|
-| 1   | Recruitment  | 1       |
-| 2   | Development  | 2       |
-
 
 ## ERD Diagram
 For a visual representation of the database schema, refer to the ERD diagram:
