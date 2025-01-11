@@ -7,7 +7,7 @@
     <ul class="list-group mt-3">
         {% for warning in warnings %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="{% url 'hr_manage:warning-detail' warning.pk %}">{{ warning }} - {{ warning.is_official|yesno:"Official,Unofficial" }}</a>
+                <a href="{% url 'hr_manage:warning-detail' warning.pk %}">{{ warning.employee.full_name }} {{warning.}} - {{ warning.is_official|yesno:"Official,Unofficial" }}</a>
                 
                 <span>
                     <a href="{% url 'hr_manage:warning-update' warning.pk %}" class="btn btn-warning btn-sm">Edit</a>

@@ -180,9 +180,11 @@ def update_rating(sender, instance, **kwargs):
      SELECT *
     FROM rating 
     WHERE rating.employee_id = {member.id};
-                                ''')[0]
-    if not rating:
+                                ''')
+    if not len(rating):
         rating = Rating.objects.create(employee=member)
+    else:
+        rating = rating[0]
     meetings = Meeting.objects.raw('''
     SELECT * 
     FROM meeting 
@@ -191,7 +193,7 @@ def update_rating(sender, instance, **kwargs):
     evaluations = Meetingevaluation.objects.raw(f'''
     SELECT *
     FROM meetingevaluation 
-    WHERE (meetingevaluation.meeting_id IN (5) AND meetingevaluation.member_id = {member.id});
+    WHERE (meetingevaluation.member_id = {member.id});
 
                                                 ''')
     avg_behavior = 0

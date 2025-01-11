@@ -2,7 +2,7 @@
 {% load math %}
 
 {% block main_content %}
-<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+<main class="container-fluid">
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="text-primary">Members</h3>
@@ -34,7 +34,7 @@
                         {% if ratings %}
                             {% for rating in ratings %}
                                 <tr>
-                                    <td>{{ rating.member }}</td>
+                                    <td>{{ rating.employee.full_name }}</td>
                                     <td>
                                         <div class="progress" style="height: 20px;">
                                             <div class="progress-bar bg-info" role="progressbar" style="width: {{ rating.task|floatformat:0|multiply:5 }}%;" aria-valuenow="{{ rating.task }}" aria-valuemin="0" aria-valuemax="20"></div>
