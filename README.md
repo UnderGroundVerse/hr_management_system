@@ -181,6 +181,21 @@ WHERE (meetingevaluation.meeting_id IN (5) AND meetingevaluation.member_id = {me
 ```
 
 
+## Insert Examples for Employee Table
+Here are some examples of inserting data into the `employee` table:
+
+```sql
+INSERT INTO hr_management_system.employee (id, full_name, email, phone_number, password)
+VALUES (1, 'John Smith', 'john@example.com', '1234567890', '12345678');
+
+INSERT INTO hr_management_system.employee (id, full_name, email, phone_number, password)
+VALUES (2, 'Jane Doe', 'jane@example.com', '9876543210', '87654321');
+
+INSERT INTO hr_management_system.employee (id, full_name, email, phone_number, password)
+VALUES (3, 'Alice Johnson', 'alice@example.com', '5551234567', 'password123');
+```
+
+
 ## Normalization Done in the Project
 Normalization is applied to reduce data redundancy and improve database design. Here's an example of normalizing the `employee` table:
 
